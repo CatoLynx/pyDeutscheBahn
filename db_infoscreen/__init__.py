@@ -49,3 +49,20 @@ class DBInfoscreen:
             
             output.append(train)
         return output
+
+    @staticmethod
+    def time_sort(train):
+        now = datetime.datetime.now()
+        now_date = now.date()
+        now_time = now.time()
+        if train['actualDeparture']:
+            sort_time = datetime.datetime.strptime(train['actualDeparture'], "%H:%M").time()
+        elif train['actualArrival']:
+            sort_time = datetime.datetime.strptime(train['actualArrival'], "%H:%M").time()
+        else:
+            raise ValueError("Train to sort has neither actualDeparture nor actualArrival")
+
+        result = datetime.datetime.combine(now_date, sort_time)
+        if now_time >= datetime.time(12, 0) and sort_time < datetime.time(12, 0):
+            result += datetime.timedelta(days=1)
+        return result
