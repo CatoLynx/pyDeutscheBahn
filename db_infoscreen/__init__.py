@@ -28,7 +28,9 @@ class DBInfoscreen:
     def get_trains(self, station):
         resp = requests.get("https://{host}/{station}.json".format(host=self.host, station=station))
         data = resp.json()
-        return data['departures']
+        if 'error' in data:
+            return []
+        return data['departures'] or []
 
     def calc_real_times(self, trains):
         output = []
