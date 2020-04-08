@@ -1,5 +1,5 @@
 name = "pyDBInfoscreen"
-version = "1.0.0"
+version = "1.0.1"
 description = "Python bindings for https://github.com/derf/db-fakedisplay"
 license = "GPLv3"
 author = "Julian Metzler"

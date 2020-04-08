@@ -51,6 +51,19 @@ class DBInfoscreen:
             
             output.append(train)
         return output
+    
+    @staticmethod
+    def round_delay(delay):
+        if delay <= 0:
+            return 0
+        
+        if delay > 210:
+            return -1 # delayed for unspecified amount of time
+        
+        delay_groups = (list(range(0, 60, 5)) + list(range(60, 210, 10)))[::-1]
+        for g in delay_groups:
+            if delay >= g:
+                return g
 
     @staticmethod
     def time_sort(train):
