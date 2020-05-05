@@ -32,6 +32,17 @@ class DBInfoscreen:
             return []
         return data['departures'] or []
 
+    def get_coach_order(self, train, departure):
+        if isinstance(departure, datetime.datetime):
+            dep_str = departure.strftime("%Y%m%d%H%M")
+        else:
+            dep_str = departure
+        resp = requests.get("https://www.apps-bahn.de/wr/wagenreihung/1.0/{train}/{departure}".format(train=train, departure=dep_str))
+        data = resp.json()
+        if 'error' in data:
+            return None
+        return data
+
     def calc_real_times(self, trains):
         output = []
         for train in trains:
