@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 metadata = {}
-with open('db_infoscreen/metadata.py') as f:
+with open('deutschebahn/metadata.py') as f:
 	exec(f.read(), metadata)
 
 setup(
