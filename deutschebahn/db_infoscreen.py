@@ -41,19 +41,27 @@ class DBInfoscreen:
             return None
         return data
 
-    def calc_real_times(self, trains):
+    def calc_real_times(self, trains, round_delay=False):
         output = []
         for train in trains:
             if train['scheduledDeparture']:
+                if round_delay:
+                    delay_dep = self.round_delay(train['delayDeparture'], indicate_unspecified=False)
+                else:
+                    delay_dep = train['delayDeparture']
                 departure = datetime.datetime.strptime(train['scheduledDeparture'], "%H:%M")
-                departure += datetime.timedelta(minutes=train['delayDeparture'])
+                departure += datetime.timedelta(minutes=delay_dep)
                 train['actualDeparture'] = departure.strftime("%H:%M")
             else:
                 train['actualDeparture'] = None
             
             if train['scheduledArrival']:
+                if round_delay:
+                    delay_arr = self.round_delay(train['delayArrival'], indicate_unspecified=False)
+                else:
+                    delay_arr = train['delayArrival']
                 departure = datetime.datetime.strptime(train['scheduledArrival'], "%H:%M")
-                departure += datetime.timedelta(minutes=train['delayArrival'])
+                departure += datetime.timedelta(minutes=delay_arr)
                 train['actualArrival'] = departure.strftime("%H:%M")
             else:
                 train['actualArrival'] = None
@@ -62,14 +70,14 @@ class DBInfoscreen:
         return output
     
     @staticmethod
-    def round_delay(delay):
+    def round_delay(delay, indicate_unspecified=True):
         if delay <= 0:
             return 0
         
-        if delay > 210:
+        if delay > 210 and indicate_unspecified:
             return -1 # delayed for unspecified amount of time
         
-        delay_groups = (list(range(0, 60, 5)) + list(range(60, 210, 10)))[::-1]
+        delay_groups = (list(range(0, 60, 5)) + list(range(60, 1440, 10)))[::-1]
         for g in delay_groups:
             if delay >= g:
                 return g
