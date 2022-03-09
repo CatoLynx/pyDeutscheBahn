@@ -1,5 +1,5 @@
 """
-Copyright 2020 Julian Metzler
+Copyright 2020-2022 Julian Metzler
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -19,3 +19,4 @@ from .metadata import version as __version__
 
 from .db_infoscreen import DBInfoscreen
 from .ds100 import DS100
+from .fahrplan import Fahrplan
