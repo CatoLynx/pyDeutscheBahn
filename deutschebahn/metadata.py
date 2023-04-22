@@ -1,5 +1,5 @@
 name = "deutschebahn"
-version = "1.3.0"
+version = "1.3.1"
 description = """Collection of utilities related to German train operator Deutsche Bahn.
 Includes bindings for https://github.com/derf/db-fakedisplay, coach order API, list of stations, and more.
 Includes unmodified DS 100 station data, licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/deed), created by Deutsche Bahn AG."""

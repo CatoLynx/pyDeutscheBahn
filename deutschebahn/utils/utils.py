@@ -46,7 +46,7 @@ def route_from(route, station):
     new_route = []
     for stop in route:
         if not start_found:
-            start_found = stop.startswith(station)
+            start_found = stop['name'].startswith(station)
         if start_found:
             new_route.append(stop)
     return new_route
