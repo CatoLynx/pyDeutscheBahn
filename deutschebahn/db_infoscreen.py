@@ -1,5 +1,5 @@
 """
-Copyright 2020 Julian Metzler
+Copyright 2020-2024 Julian Metzler
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -16,6 +16,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
 
 import datetime
+import pytz
 import requests
 
 
@@ -30,12 +31,23 @@ class DBInfoscreen:
             return []
         return data['departures'] or []
 
-    def get_coach_order(self, train, departure):
+    def get_coach_order(self, train, departure, ibnr):
+        departure = departure.astimezone(pytz.utc)
+        train_type = train.split()[0]
+        train_number = train.split()[-1]
         if isinstance(departure, datetime.datetime):
             dep_str = departure.strftime("%Y%m%d%H%M")
         else:
             dep_str = departure
-        resp = requests.get("https://ist-wr.noncd.db.de/wagenreihung/1.0/{train}/{departure}".format(train=train, departure=dep_str))
+        params = {
+            "administrationId": 80,
+            "category": train_type,
+            "date": departure.strftime("%Y-%m-%d"),
+            "evaNumber": ibnr,
+            "number": train_number,
+            "time": departure.isoformat().replace("+00:00", "Z")
+        }
+        resp = requests.get("https://www.bahn.de/web/api/reisebegleitung/wagenreihung/vehicle-sequence", params=params)
         data = resp.json()
         if 'error' in data:
             return None
